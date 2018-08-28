@@ -28,10 +28,121 @@ import "fmt"
 */
 
 func main() {
-	main1()
+	// main1()
+	// main4()
+	// main5()
+	main6()
 }
 
 func main1() {
 	go fmt.Println("1")
 	fmt.Println("2")
+}
+
+func main2() {
+	/*
+			golang里channel的实现原理
+
+			channel是消息传递的机制, 用于多线程环境下lock free synchronization.
+			它同时具备2个特性:
+					(1).消息传递
+					(2).同步
+
+			golang里的channel的性能???
+
+			自带的runtime package里已经提供了benchmark代码, 可以运行下面的命令查看其性能
+				go test -v -test.bench=".*" runtime
+
+			channel的实现，都在$GOROOT/src/pkg/runtime/chan.c里
+
+			它是通过共享内存实现的:
+				struct Hchan {
+				}
+
+			具体的实现是chan.c里的 Hchan* runtime·makechan_c(ChanType *t, int64 hint)
+			此时, hint=5, t=interface{}
+
+
+	*/
+
+	// ch := make(chan interface{}, 5)
+}
+
+func main3() {
+	/*
+				golang之Channel
+				Channel是Go中的一个核心类型, 可以将其看成一个管道, 通过它并发单元就可以发送或者接收数据进行通信(communication)!!!
+
+				Do not communicate by sharing memory; instead, share memory by communicating.
+
+				channel基础知识
+					(1).创建channel:		使用内建函数make创建channel
+					(2).
+					(3).
+
+	*/
+
+	// 使用内建函数make创建channel
+	// 	unBufferChan	:= make(chan int)		// 1 无缓冲的channel
+	// 	bufferChan		:= make(chan int, N)	// 2 带缓冲的channel
+
+	//	无缓冲:			发送和接收动作是同时发生的, 如果goroutine读取channel(<-channel), 则发送者(channel<-)会一直阻塞;
+	//  缓冲channel:	类似一个有容量的队列, 当队列满的时候发送者会阻塞; 当队列空的时候接收者会阻塞!!!
+}
+
+func main4() {
+	/* 往一个nil channel中发送数据会一直被阻塞, 从一个nil channel中接收数据会一直被block, 所以才会产生如下死锁的现象!!! */
+
+	// fatal error: all goroutines are asleep - deadlock!
+	//
+	var x chan int
+	go func() {
+		x <- 1
+	}()
+	<-x
+}
+
+// channel读写操作
+func main5() {
+	/*				channl使用要小心, 使用前切记要初始化, 初始化函数用make!!!		*/
+	var x int
+
+	ch := make(chan int, 10)				// 初始化函数用make
+
+	// 读操作
+	// x <- ch
+
+	// 写操作
+	ch <- x
+}
+
+func main6() {
+	// golang 单向管道使用
+
+	/*
+			一直听说代码即注释的概念, 但是一直没有一个具体的概念, 看到golang中通过单向chan的来做代码即注释的例子!!!
+
+			单向管道
+						对于单向channel我们可以这样定义!!!
+						发送值的通道类型
+												chan<-T
+						接收值的通道类型
+												<-chan T
+
+			中单向管道应用场景
+						在os/signal中使用了如下定义Notify函数只会对该通道发送元素值, 而不会从该通道接收值!
+							func Notify(c chan<- os.Signal, sig ...os.Signal)
+			这里, 问题来了, 对于单向的通道如何来应用那?
+					毕竟只向一个通道发送值, 而没有接收过程是没有意义的。
+
+			单向管道应用
+					在func Notify(c chan<- os.Signal, sig …os.Signal)中, chan<- 表达了该函数只会向通道发送数据。
+					我们在调用此函数的时候, 从表面上看需要传入一个只能发送元素不能接收元素的通道, 但是传入这样的通过是错误的!!!
+
+			函数的传入通道应该是一个双向通道
+					调用过程中, 我们应向函数传入双向通道并自觉遵守这个隐性规定, 传入的双向通道会转为一个单向通道!!!
+
+			
+
+	*/
 }
