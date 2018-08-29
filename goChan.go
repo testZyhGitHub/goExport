@@ -42,7 +42,9 @@ func main() {
 	// main9()
 	// main10()
 	// main11()
-	main12()
+	// main12()
+	// main13()
+	main14()
 }
 
 func main1() {
@@ -434,4 +436,52 @@ func main12() {
 	}
 }
 
+func loop() {
+	for i := 0; i < 10; i++ {
+		fmt.Printf("%d ", i)
+	}
+}
+
+// GO Channel并发、死锁问题
+func main13() {
+	// 如果不是我对真正并行的线程的追求, 就不会认识到Go有多么的迷人!!!
+	// Go语言从语言层面上就支持了并发, 这与其他语言大不一样, 不像以前我们要用Thread库, 来新建线程, 还要用线程安全的队列库来共享数据!!!
+
+	// Go语言的goroutines、信道和死锁
+	/*
+			Go语言中有个概念叫做goroutine, 这类似我们熟知的线程, 但是更轻!!!
+
+	*/
+
+	loop()
+	loop()
+}
+
+// http://www.cnblogs.com/yank/p/JoinSelect.html
+// 连表查询
+// https://blog.csdn.net/smilesundream/article/details/80209026
+// https://blog.csdn.net/kjfcpua/article/details/17710331
+// https://blog.csdn.net/phantom_111/article/details/79489313
+// https://studygolang.com/articles/10172
+// https://blog.csdn.net/netdxy/article/details/54564436
+// https://www.cnblogs.com/suoning/p/7259106.html
+// https://www.cnblogs.com/suoning/p/7237444.html
+//
+func main14() {
+	// 把一个loop放在一个goroutine里跑，我们可以使用关键字go来定义并启动一个goroutine
+	go loop()				// 启动一个goroutine
+	loop()					// 可是为什么只输出了一趟呢? 明明我们主线跑了一趟, 也开了一个goroutine来跑一趟啊!!! 原来, 在goroutine还没来得及跑loop的时候, 主函数已经退出了!!!
+
+	// main函数退出地太快了, 我们要想办法阻止它过早地退出, 一个办法是让main等待一下:
+	time.Sleep(time.Second) // 停顿一秒
+
+	/*
+			可是采用等待的办法并不好, 如果goroutine在结束的时候, 告诉下主线说"Hey, 我要跑完了!!!", 就好了, 即所谓阻塞主线的办法, 回忆下我们Python里面等待所有线程执行完毕的写法:
+			for thread in threads:
+					thread.join()
+
+			是的, 我们也需要一个类似join的东西来阻塞住主线, 那就是信道!!!
+
+	*/
+}
 
