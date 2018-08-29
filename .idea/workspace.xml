@@ -16,8 +16,48 @@
       <file leaf-file-name="goChan.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/goChan.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="144" column="12" selection-start-line="144" selection-start-column="12" selection-end-line="144" selection-end-column="12" />
+            <state relative-caret-position="453">
+              <caret line="430" column="84" selection-start-line="430" selection-start-column="84" selection-end-line="430" selection-end-column="84" />
+              <folding>
+                <element signature="n#!!block;n#main1#0" />
+                <element signature="n#!!block;n#main2#0" />
+                <element signature="n#!!block;n#main3#0" />
+                <element signature="n#!!block;n#main4#0" />
+                <element signature="n#!!block;n#main5#0" />
+                <element signature="n#!!block;n#main6#0" />
+                <element signature="n#!!block;n#main7#0" />
+                <element signature="n#!!block;n#main8#0" />
+                <element signature="n#!!block;n#Count#0" />
+                <element signature="n#!!block;n#main9#0" />
+                <element signature="n#!!block;n#main10#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="goSort.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/goSort.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" column="67" selection-start-line="7" selection-start-column="67" selection-end-line="7" selection-end-column="67" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="goProg.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/goProg.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="print.go" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Go/src/fmt/print.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="193" column="5" selection-start-line="193" selection-start-column="5" selection-end-line="193" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -38,6 +78,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/goProg.go" />
+        <option value="$PROJECT_DIR$/goSort.go" />
         <option value="$PROJECT_DIR$/goChan.go" />
       </list>
     </option>
@@ -125,17 +167,17 @@
     <frame x="-7" y="2" width="1932" height="1045" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18696581" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32995495" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info active="true" anchor="bottom" id="Version Control" visible="true" weight="0.32995495" />
+      <window_info anchor="bottom" id="Version Control" weight="0.3198198" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" weight="0.32995495" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3412162" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.19481982" />
       <window_info id="Favorites" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -156,24 +198,90 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/goChan.go</url>
-          <line>38</line>
+          <line>49</line>
           <properties />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/goChan.go</url>
-          <line>31</line>
+          <line>203</line>
           <properties />
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/goChan.go</url>
+          <line>161</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/goChan.go</url>
+          <line>167</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/goChan.go</url>
+          <line>271</line>
+          <properties />
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="14" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://C:/Go/src/runtime/proc.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="212" selection-start-line="212" selection-end-line="212" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/sync/mutex.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/fmt/print.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="193" column="5" selection-start-line="193" selection-start-column="5" selection-end-line="193" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/goProg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/goSort.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="67" selection-start-line="7" selection-start-column="67" selection-end-line="7" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/goChan.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="144" column="12" selection-start-line="144" selection-start-column="12" selection-end-line="144" selection-end-column="12" />
+        <state relative-caret-position="453">
+          <caret line="430" column="84" selection-start-line="430" selection-start-column="84" selection-end-line="430" selection-end-column="84" />
+          <folding>
+            <element signature="n#!!block;n#main1#0" />
+            <element signature="n#!!block;n#main2#0" />
+            <element signature="n#!!block;n#main3#0" />
+            <element signature="n#!!block;n#main4#0" />
+            <element signature="n#!!block;n#main5#0" />
+            <element signature="n#!!block;n#main6#0" />
+            <element signature="n#!!block;n#main7#0" />
+            <element signature="n#!!block;n#main8#0" />
+            <element signature="n#!!block;n#Count#0" />
+            <element signature="n#!!block;n#main9#0" />
+            <element signature="n#!!block;n#main10#0" />
+          </folding>
         </state>
       </provider>
     </entry>

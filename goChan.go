@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+	"runtime"
+	"time"
+)
 
 /*
 		Golang关于通道Chan详解
@@ -31,7 +36,13 @@ func main() {
 	// main1()
 	// main4()
 	// main5()
-	main6()
+	// main6()
+	// main7()
+	// main8()
+	// main9()
+	// main10()
+	// main11()
+	main12()
 }
 
 func main1() {
@@ -61,7 +72,6 @@ func main2() {
 
 			具体的实现是chan.c里的 Hchan* runtime·makechan_c(ChanType *t, int64 hint)
 			此时, hint=5, t=interface{}
-
 
 	*/
 
@@ -141,8 +151,287 @@ func main6() {
 
 			函数的传入通道应该是一个双向通道
 					调用过程中, 我们应向函数传入双向通道并自觉遵守这个隐性规定, 传入的双向通道会转为一个单向通道!!!
-
-			
-
 	*/
 }
+
+func f1(in chan int) {
+	fmt.Println(<-in)
+}
+
+func tstZuS2() {
+	out := make(chan int)		// 这是由于out <- 2之前不存在对out的接收, 所以, 对于out <- 2来说, 永远是阻塞的, 即一直会等下去!!!
+	out <- 2
+	go f1(out)
+}
+
+func tstZuS3() {
+	out := make(chan int)		// 这是由于out <- 2前存在对管道的读操作, 所以out <- 2 是合法的, 就像前文说的, 发送操作在接收者准备好之前是阻塞的!!!
+	go f1(out)
+	out <- 2
+}
+
+func main7() {
+	/*
+			golang协程		----->		通道channel阻塞
+
+			说到channel, 就一定要说一说线程了!!!
+			任何实际项目, 无论大小, 并发是必然存在的!!!
+			并发的存在, 就涉及到线程通信!!!
+
+			在当下的开发语言中, 线程通讯主要有两种, 共享内存与消息传递!!!
+					(1).共享内存一定都很熟悉, 通过共同操作同一对象, 实现线程间通讯;
+					(2).消息传递即通过类似聊天的方式;
+					(3).golang对并发的处理采用了协程的技术;
+					(4).golang的goroutine就是协程的实现;
+					(5).协程的概念很早就有, 简单的理解为"轻量级线程", goroutine就是为了解决"并发任务间"的"通信"而设计的;
+					(6).golang解决通信的理念是:				不要通过共享内存来通信, 而应该通过通信来共享内存!!!					--------->		解决方案是?
+					(7).golang解决方案是"消息传递机制", "消息的传递"就是通过channel来实现的!!!
+					(8).如何使用channel?				谈一谈对channe阻塞的理解?
+			①.发送者角度:
+								对于同一个通道, 发送操作(协程或者函数中的), 在接收者准备好之前是阻塞的;
+								如果chan中的数据无人接收, 就无法再给通道传入其他数据;
+								因为新的输入无法在通道非空的情况下传入;
+								所以发送操作会等待chan再次变为可用状态:			就是通道值被接收时(可以传入变量)。
+
+			②.接收者角度:
+								对于同一个通道, 接收操作是阻塞的(协程或函数中的), 直到发送者可用;
+								如果通道中没有数据, 接收者就阻塞了;
+
+					(9).
+					(10).
+	*/
+
+	// tstZuS2()
+	tstZuS3()
+}
+
+func Add(x, y int) {
+	z := x + y
+	fmt.Println(z)
+}
+
+func main8() {
+	/* GoLang之协程、channel、select、同步锁 */
+	// WebServer几种主流的并发模型
+	/*
+			1.多线程, 每个线程一次处理一个请求, 在当前请求处理完成之前不会接收其它请求; 但在高并发环境下, 多线程的开销比较大;
+			2.基于回调的异步IO, 如Nginx服务器使用的epoll模型, 这种模式通过事件驱动的方式使用异步IO, 使服务器持续运转, 但人的思维模式是串行的, 大量回调函数会把流程分割, 对于问题本身的反应不够自然;
+			3.协程, 不需要抢占式调度, 可以有效提高线程的任务并发性, 而避免多线程的缺点; 但原生支持协程的语言还很少!!!
+			4.协程(coroutine)是Go语言中的轻量级线程实现, 由Go运行时(runtime)管理;
+			5.在一个函数调用前加上go关键字, 这次调用就会在一个新的goroutine中并发执行;
+			6.当被调用的函数返回时, 这个goroutine也自动结束;
+			7.需要注意的是, 如果这个函数有返回值, 那么这个返回值会被丢弃!
+			8.
+	*/
+
+	/*
+			执行上面的代码, 会发现屏幕什么也没打印出来, 程序就退出了!!!
+			下面的例子, main()函数启动了10个goroutine, 然后返回, 这时程序就退出了, 而被启动的执行Add()的goroutine没来得及执行!!!
+			我们想要让main()函数等待所有goroutine退出后再返回, 但如何知道goroutine都退出了呢?   这就引出了多个goroutine之间通信的问题!!!
+
+			在工程上, 有两种最常见的并发通信模型:		共享内存和消息
+	*/
+	for i := 0; i < 10; i++ {
+		go Add(i, i)
+	}
+}
+
+var counter int = 0
+
+// 因为10个goroutine是并发执行的, 所以我们还引入了锁, 也就是代码中的lock变量;
+func Count(lock *sync.Mutex) {
+	lock.Lock()
+	counter++
+	fmt.Println("counter =", counter)
+	lock.Unlock()
+}
+
+// 在工程上, 有两种最常见的并发通信模型:		共享内存和消息
+// 下面的例子, 使用了锁变量(属于一种共享内存)来同步协程, 事实上Go语言主要使用消息机制(channel)来作为通信模型;
+func main9() {
+	/*
+		来看下面的例子, 10个goroutine共享了变量counter, 每个goroutine执行完成后, 将counter值加1;
+		因为10个goroutine是并发执行的, 所以我们还引入了锁, 也就是代码中的lock变量;
+		在main()函数中, 使用for循环来不断检查counter值, 当其值达到10时, 说明所有goroutine都执行完毕了, 这时main()返回, 程序退出!!!
+	*/
+
+	lock := &sync.Mutex{}
+
+	for i := 0; i < 10; i++ {
+		go Count(lock)
+	}
+
+	for {
+		lock.Lock()
+		c := counter
+		lock.Unlock()
+
+		runtime.Gosched()	// 出让时间片
+
+		if c >= 10 {
+			break
+		}
+	}
+
+	fmt.Println("All Go routine run finished!!!")
+}
+
+// channel
+/*
+		消息机制认为每个并发单元是自包含的、独立的个体, 并且都有自己的变量, 但在不同并发单元间这些变量不共享;
+		每个并发单元的输入和输出只有一种, 那就是消息;
+		channel是Go语言, 在语言级别提供的goroutine间的通信方式, 我们可以使用channel在多个goroutine之间传递消息;
+		channel是进程内的通信方式, 因此通过channel传递对象的过程和调用函数时的参数传递行为比较一致, 比如也可以传递指针等;
+		channel是类型相关的, 一个channel只能传递一种类型的值, 这个类型需要在声明channel时指定;
+
+		channel的声明形式为:
+				var chanName chan ElementType
+
+		举个例子, 声明一个传递int类型的channel:
+				var ch chan int
+
+		使用内置函数make()定义一个channel:
+				ch := make(chan int)
+
+		在channel的用法中, 最常见的包括写入和读出:
+				将一个数据value写入至channel, 这会导致阻塞, 直到有其他goroutine从这个channel中读取数据;
+				将一个数据value写入至channel，这会导致阻塞，直到有其他goroutine从这个channel中读取数据;
+						ch <- value
+
+		从channel中读取数据, 如果channel之前没有写入数据, 也会导致阻塞, 直到channel中被写入数据为止!!!
+						value := <-ch
+
+		可以关闭不再使用的channel:
+						close(ch)
+
+		我们还可以创建一个带缓冲的channel:
+						c := make(chan int, 1024)		此时, 创建一个大小为1024的int类型的channel, 即使没有读取方, 写入方也可以一直往channel里写入, 在缓冲区被填完之前都不会阻塞!!!
+
+		从带缓冲的channel中读数据
+						for i:=range c {
+						　　...
+						}
+*/
+
+// 现在利用channel来重写上面的例子
+/*
+func Count1(ch chan int, goRoutineNo int) {
+	ch <- 1									// 将一个数据value写入至channel, 这会导致阻塞, 直到有其他goroutine从这个channel中读取数据
+	fmt.Println("Counting")
+
+	//info := fmt.Sprintf("go rountine no: %d", goRoutineNo)
+	//fmt.Println(info)
+}
+*/
+
+func Count1(ch chan int, goRoutineNo int) {
+	ch <- 1									// 将一个数据value写入至channel, 这会导致阻塞, 直到有其他goroutine从这个channel中读取数据
+	//fmt.Println("Counting")
+
+	info := fmt.Sprintf("%d\n", goRoutineNo)
+	fmt.Print(info)
+	// fmt.Println("Counting")
+}
+
+func main10() {
+	chs := make([] chan int, 10)			// 一个channel只能传递一种类型的值, 创建一个带有10个缓冲的, 传递int类型的channel数组, 定义了一个包含10个channel的数组, 并把数组中的每个channel分配给10个不同的goroutine
+
+	fmt.Println("Start to create channel......")
+
+	// 在每个goroutine完成后, 向goroutine写入一个数据, 在这个channel被读取前, 这个操作是阻塞的!!!
+	// 在所有的goroutine启动完成后, 依次从10个channel中读取数据, 在对应的channel写入数据前, 这个操作也是阻塞的!
+	// 这样, 就用channel实现了类似锁的功能, 并保证了所有goroutine完成后main()才返回!!!
+	for i := 0; i < 10; i++ {
+		chs[i] = make(chan int)
+		go Count1(chs[i], i+1)
+	}
+
+	/*
+	for j := 0; j < 100000; j++ {
+		fmt.Println(j)
+	}
+
+	for k := 0 ; k < 10000; k++ {
+		fmt.Println("\n")
+	}
+	*/
+
+	for _, ch := range(chs) {
+		<-ch
+	}
+
+	//time.Sleep(10 * time.Second)
+	time.Sleep(1)							// 主线程还是需要休息一把!!!
+	//time.Sleep(1 * time.Second)
+
+	//fmt.Println("Print all huanhang......")
+	fmt.Println("End to create channel......")
+}
+
+// 在一个函数中使用单向读channel
+func Parse(ch <-chan int) {
+	for value := range ch {
+		fmt.Println("Parsing value", value)
+	}
+}
+
+// 我们在将一个channel变量传递到一个函数时, 可以通过将其指定为单向channel变量, 从而限制该函数中可以对此channel的操作!!!
+// 单向channel的作用有点类似于c++中的const关键字, 用于遵循代码"最小权限原则"!!!
+//
+func main11() {
+	// 单向channel变量的声明
+	// var ch1 chan int			// 普通channel
+	// var ch2 chan <- int		// 只用于写int数据
+	// var ch3 <-chan int		// 只用于读int数据
+
+	// 可以通过类型转换, 将一个channel转换为单向的:
+	// ch4 := make(chan int)
+	// ch5 := <-chan int(ch4)	// 单向读
+	// ch6 := chan<- int(ch4)	// 单向写
+}
+
+/*
+		channel作为一种原生类型, 本身也可以通过channel进行传递, 例如下面这个流式处理结构:
+*/
+type PipeData struct {
+	value		int
+	handler		func(int) int
+	next		chan int
+}
+
+func handle(queue chan *PipeData) {
+	for data := range queue {
+		data.next <- data.handler(data.value)
+	}
+}
+
+// select
+/*
+		在UNIX中, select()函数用来监控一组描述符, 该机制常被用于实现高并发的socket服务器程序;
+		Go语言直接在语言级别支持select关键字, 用于处理异步IO问题, 大致结构如下:
+
+		select {
+			case <- chan1:			// 如果chan1成功读到数据
+			case chan2 <- 1:		// 如果成功向chan2写入数据
+			default:				// 默认分支
+		}
+
+		Go语言没有对channel提供直接的超时处理机制, 但我们可以利用select来间接实现, 例如:
+*/
+func main12() {
+	timeout := make(chan bool, 1)
+	ch := make(chan bool, 1)
+
+	go func() {
+		time.Sleep(1e9)
+		timeout <- true
+	}()
+
+	switch {
+		// 这样使用select就可以避免永久等待的问题, 因为程序会在timeout中获取到一个数据后继续执行, 而无论对ch的读取是否还处于等待状态!!!
+		case <- ch:			// 从ch中读取到数据
+		case <- timeout: 	// 没有从ch中读取到数据, 但从timeout中读取到了数据
+	}
+}
+
+
