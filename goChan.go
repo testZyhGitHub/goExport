@@ -457,7 +457,7 @@ func main13() {
 	loop()
 }
 
-//
+// http://www.cnblogs.com/yank/p/JoinSelect.html
 // 连表查询
 // https://blog.csdn.net/smilesundream/article/details/80209026
 // https://blog.csdn.net/kjfcpua/article/details/17710331
